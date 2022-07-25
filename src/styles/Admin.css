@@ -1,0 +1,41 @@
+.admin {
+  background-color: #edeceb;
+  min-width: 100vw;
+  min-height: 100vh;
+}
+
+.adminHeader {
+  background-color: white;
+}
+
+.adminBody {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.adminBody ul {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.adminBody ul li {
+  background-color: white;
+  padding: 20px;
+  border: 2px solid;
+  border-radius: 5px;
+}
+
+.adminBody ul li:hover {
+  border: 2px solid black;
+  border-radius: 5px;
+  color: black;
+  cursor: pointer;
+  background-color: gray;
+}
+
+@media (max-width: 800px) {
+  .adminBody ul {
+    display: grid;
+    grid-template-columns: auto;
+  }
+}

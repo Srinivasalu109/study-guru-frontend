@@ -1,0 +1,36 @@
+* {
+  box-sizing: border-box;
+}
+
+.Item {
+  margin: 20px;
+  border: solid #edeceb 3px;
+  width: fit-content;
+}
+
+.Items {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 70px;
+}
+
+.Item:hover {
+  padding: 10;
+  border: solid rgb(2, 2, 26) 3px;
+}
+
+@media (max-width: 1200px) {
+  .Items {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 70px;
+  }
+}
+
+@media (max-width: 750px) {
+  .Items {
+    display: grid;
+    grid-template-columns: auto;
+    gap: 70px;
+  }
+}

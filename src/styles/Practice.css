@@ -1,0 +1,147 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.practice {
+  background-color: #edeceb;
+  height: 100vh;
+}
+
+.header {
+  width: 100%;
+}
+
+.header ul {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.content {
+  display: flex;
+}
+
+.chapter h1,
+h2,
+h3 {
+  margin: 0;
+  padding: 0;
+}
+.practice .header {
+  background-color: white;
+}
+
+.chapter {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.navigate {
+}
+
+.question ul {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+}
+
+.question ul li {
+  margin: 20px 0px 20px 0px;
+  padding: 15px;
+  font-size: 1.2rem;
+  background-color: white;
+  box-sizing: border-box;
+  border: solid 1px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.question-container {
+  width: 60%;
+}
+
+.question ul li:hover {
+  color: black;
+  border: solid 1px rgb(255, 166, 1);
+  background-color: gray;
+}
+
+.options {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.sidebar {
+  width: 40%;
+}
+
+.chapters {
+  border-radius: 3px;
+  width: 90%;
+  height: 200px;
+  overflow-y: auto;
+  border: solid 2px;
+  margin: 20px;
+}
+
+.topics {
+  border-radius: 3px;
+  width: 90%;
+  height: 200px;
+  border: solid 2px;
+  overflow-y: auto;
+  margin: 20px;
+}
+
+.questions {
+  border-radius: 3px;
+  width: 90%;
+  height: 200px;
+  overflow-y: auto;
+  border: solid 2px;
+  margin: 20px;
+}
+
+.questions ul li {
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  padding: 8px;
+  background: #fff;
+  border: 2px solid #666;
+  color: #666;
+  text-align: center;
+
+  font: 32px Arial, sans-serif;
+}
+
+.sidebar h1 {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.sidebar ul {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar ul li {
+  margin: 10px;
+  font-size: 1.2rem;
+}
+
+.sidebar ul li:hover {
+  color: black;
+}
+
+.questions ul {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto auto;
+  margin: 20px;
+}
+
+.questions ul li:hover {
+  background-color: gray;
+}

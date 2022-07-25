@@ -1,0 +1,39 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.CustomCard {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  border-bottom: solid 1px;
+}
+
+.cardSection {
+  width: 90%;
+  height: auto;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.CustomCard div img {
+  width: 40vw;
+  height: 30vw;
+}
+
+.CustomCard h1 {
+  font-size: 1.6rem;
+}
+
+.CustomCard p {
+  font-size: 1.3rem;
+}
+
+.moreDetails {
+  display: flex;
+  flex-direction: column;
+  width: 48%;
+  height: 90%;
+}

@@ -1,0 +1,17 @@
+.solution {
+  background-color: #edeceb;
+  min-width: 100vw;
+  min-height: 100vh;
+}
+
+.solution-header {
+  background-color: white;
+  padding: 10px;
+  position: sticky;
+  top: 0;
+}
+
+.solution-body {
+  border: 2px solid;
+  padding: 30px;
+}

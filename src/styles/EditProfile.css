@@ -1,0 +1,36 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.changeProfile ul {
+  background-color: white;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  text-align: center;
+  width: 350px;
+}
+
+.changeProfile ul li {
+  border-bottom: 2px solid;
+  width: 100%;
+  margin: 0px;
+  padding: 20px;
+  cursor: pointer;
+}
+
+.changeProfile ul li:nth-child(3) {
+  color: red;
+  font-weight: bold;
+  border-bottom: 2px solid black;
+}
+
+.changeProfile ul li:hover {
+  color: black;
+}
+
+.changeProfile ul li:nth-child(3):hover {
+  color: red;
+}
