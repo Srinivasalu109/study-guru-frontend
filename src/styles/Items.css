@@ -6,6 +6,7 @@
   margin: 20px;
   border: solid #edeceb 3px;
   width: fit-content;
+  cursor: pointer;
 }
 
 .Items {
@@ -14,10 +15,10 @@
   gap: 70px;
 }
 
-.Item:hover {
+/* .Item:hover {
   padding: 10;
   border: solid rgb(2, 2, 26) 3px;
-}
+} */
 
 @media (max-width: 1200px) {
   .Items {

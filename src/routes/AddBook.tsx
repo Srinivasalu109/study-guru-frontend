@@ -6,26 +6,74 @@ import { Dropdown } from "semantic-ui-react";
 import { TextArea, Form } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 import { bookDetails } from "../utils/formDetails";
+import axios from "axios";
+
+interface NewBook {
+  bookId: String;
+  bookName: String;
+  author: String;
+  volume: String;
+  description: String;
+}
+interface Book {
+  bookId: String;
+  bookName: String;
+  author: String;
+  branch: String;
+  subject: String;
+  volume: String;
+  bookImgURL: String;
+  description: String;
+}
 
 function AddBook() {
-  const countryOptions = [
+  const branches = [
     { key: "af", value: "MPC", text: "MPC" },
-    { key: "ax", value: "BPC", text: "BPC" },
+    { key: "ax", value: "BiPC", text: "BiPC" },
   ];
+
+  const MPCsubjects = [
+    { key: "af", value: "Mathematics", text: "Mathematics" },
+    { key: "ax", value: "Physics", text: "Physics" },
+    { key: "ax", value: "Chemistry", text: "Chemistry" },
+  ];
+
+  const BiPCsubjects = [
+    { key: "af", value: "Biology", text: "Biology" },
+    { key: "ax", value: "Physics", text: "Physics" },
+    { key: "ax", value: "Chemistry", text: "Chemistry" },
+  ];
+
+  const subjects = [
+    { key: "af", value: "Mathematics", text: "Mathematics" },
+    { key: "ax", value: "Physics", text: "Physics" },
+    { key: "ax", value: "Chemistry", text: "Chemistry" },
+    { key: "af", value: "Biology", text: "Biology" },
+    { key: "ax", value: "Physics", text: "Physics" },
+    { key: "ax", value: "Chemistry", text: "Chemistry" },
+  ];
+
   const [img, setImg] = useState<any>("");
   const [imgUrl, setImgUrl] = useState<String>("");
-  const [newBook, setNewBook] = useState<object>(bookDetails);
+  const [newBook, setNewBook] = useState<NewBook>(bookDetails);
   const [branch, setBranch] = useState<any>("");
+  const [subject, setSubject] = useState<any>("");
+  const navigate = useNavigate();
 
   const handleChange = (e: any) => {
     setNewBook({ ...newBook, [e.target.name]: e.target.value });
   };
 
-  const handleSelect = (e: any, data: any) => {
+  const handleBranch = (e: any, data: any) => {
     setBranch(data.value);
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubject = (e: any, data: any) => {
+    setSubject(data.value);
+  };
+
+  const handleSubmit = async (e: any) => {
+    console.log(newBook.bookId);
     e.preventDefault();
     if (!branch) {
       alert("please select branch");
@@ -34,7 +82,26 @@ function AddBook() {
     if (!imgUrl) {
       alert("please upload image");
     }
-    console.log("submited");
+    const book: Book = {
+      bookId: newBook.bookId,
+      bookName: newBook.bookName,
+      subject: subject,
+      branch: branch,
+      author: newBook.author,
+      volume: newBook.volume,
+      description: newBook.description,
+      bookImgURL: imgUrl,
+    };
+    await axios
+      .post("http://localhost:4000/add/addBook", book)
+      .then((res) => {
+        console.log(res);
+        alert("sucessfully added");
+      })
+      .catch((err) => {
+        alert("This book is already added");
+        console.log(err);
+      });
   };
   useEffect(() => {
     if (img !== "") {
@@ -60,7 +127,12 @@ function AddBook() {
   return (
     <div>
       <div className="add">
-        <div className="addHeader">
+        <div
+          className="addHeader"
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
           <IoArrowBackCircleOutline
             size={35}
             style={{ cursor: "pointer", marginLeft: "7px" }}
@@ -83,14 +155,15 @@ function AddBook() {
                   placeholder="book id"
                   style={{ margin: "10px", width: "450px" }}
                   type="text"
-                  onchange={handleChange}
+                  onChange={handleChange}
                   required
                 />
                 <Input
                   name="bookName"
-                  placeholder="user name"
+                  placeholder="book name"
                   style={{ margin: "10px", width: "450px" }}
                   type="text"
+                  onChange={handleChange}
                   required
                 />{" "}
                 <Input
@@ -98,34 +171,47 @@ function AddBook() {
                   placeholder="author"
                   style={{ margin: "10px", width: "450px" }}
                   type="text"
+                  onChange={handleChange}
                   required
                 />{" "}
                 <Dropdown
                   placeholder="Branch"
                   search
                   selection
-                  options={countryOptions}
+                  options={branches}
                   value={branch}
-                  onChange={handleSelect}
+                  onChange={handleBranch}
                   style={{ margin: "10px", width: "450px" }}
                   required
                 />
-                <Input
-                  name="subject"
-                  placeholder="subject"
+                <Dropdown
+                  placeholder="Subject"
+                  search
+                  selection
+                  options={
+                    branch === "MPC"
+                      ? MPCsubjects
+                      : branch === "BiPC"
+                      ? BiPCsubjects
+                      : subjects
+                  }
+                  value={subject}
+                  onChange={handleSubject}
                   style={{ margin: "10px", width: "450px" }}
-                  type="text"
+                  required
                 />
                 <Input
                   name="volume"
                   placeholder="volume (optional)"
                   style={{ margin: "10px", width: "450px" }}
                   type="number"
+                  onChange={handleChange}
                 />
                 <TextArea
-                  name="discription"
+                  name="description"
                   placeholder="discription about the book (optional)"
                   style={{ margin: "10px", width: "450px" }}
+                  onChange={handleChange}
                 />
                 <label className="custom-file-upload">
                   <input

@@ -1,6 +1,5 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
 import Books from "./routes/Books";
 import Universities from "./routes/Universities";
 import Events from "./routes/Events";
@@ -23,6 +22,7 @@ import AddEvent from "./routes/AddEvent";
 import AddTopicToChapter from "./routes/AddTopicToChapter";
 import AddChapter from "./routes/AddChapter";
 import AddQuestionToTopic from "./routes/AddQuestionToTopic";
+import BooksByUniversity from "./routes/BooksByUniversity";
 
 function App() {
   return (
@@ -31,11 +31,15 @@ function App() {
       <Route path="/signup" element={<Signup />} />
       <Route path="/switchAcount" element={<SwitchAcount />} />
       <Route path="/editProfile" element={<EditProfile />} />
-      <Route path="/books/:books" element={<Books />} />
-      <Route path="/bookDetails" element={<BookDetails />} />
-      <Route path="/universities/:universities" element={<Universities />} />
-      <Route path="/events/:events" element={<Events />} />
-      <Route path="/progress/:progress" element={<Progress />} />
+      <Route path="/books" element={<Books />} />
+      <Route path="/bookDetails/:bookId" element={<BookDetails />} />
+      <Route path="/universities" element={<Universities />} />
+      <Route
+        path="/booksByUniversity/:universityId"
+        element={<BooksByUniversity />}
+      />
+      <Route path="/events" element={<Events />} />
+      <Route path="/progress" element={<Progress />} />
       <Route path="/admin" element={<Admin />} />
       <Route path="/addBook" element={<AddBook />} />
       <Route path="/addUniversity" element={<AddUniversity />} />
@@ -45,7 +49,7 @@ function App() {
       <Route path="/addBookToUniversity" element={<AddBookToUniversity />} />
       <Route path="/addUniversityToBook" element={<AddUniversityToBook />} />
       <Route path="/addTopicToChapter" element={<AddTopicToChapter />} />
-      <Route path="/AddQuestionToTopic" element={<AddQuestionToTopic />} />
+      <Route path="/addQuestionToTopic" element={<AddQuestionToTopic />} />
       <Route path="/addUniversity" element={<AddUniversity />} />
       <Route path="/addEvent" element={<AddEvent />} />
       <Route path="/practice" element={<Practice />} />

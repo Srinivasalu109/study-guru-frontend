@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import "../styles/Options.css";
-
-interface universityType {
-  handleUnivesityType: (cat: String) => void;
+interface funType {
+  handleSubject: (sub: String) => void;
 }
 const options = [true, false, false];
-
-function UniversityOptions({ handleUnivesityType }: universityType) {
+function BooksByUniversityOptions({ handleSubject }: funType) {
   const [subject, setSubject] = useState<Array<boolean>>(options);
   const [trigger, setTrigger] = useState<number>(0);
+
   const handleClick = (index: number) => {
     for (let i = 0; i < options.length; i++) {
       if (i === index) {
@@ -24,11 +23,11 @@ function UniversityOptions({ handleUnivesityType }: universityType) {
   return (
     <div>
       <ul className="subjects">
-        {["Deemed", "State Board", "Central Board"].map((sub, i) => (
+        {["Mathematics", "Physics", "Chemistry"].map((sub, i) => (
           <li
             className={`${subject[i] && "selectSub"}`}
             onClick={() => {
-              handleUnivesityType(sub);
+              handleSubject(sub);
               handleClick(i);
             }}
           >
@@ -40,4 +39,4 @@ function UniversityOptions({ handleUnivesityType }: universityType) {
   );
 }
 
-export default UniversityOptions;
+export default BooksByUniversityOptions;

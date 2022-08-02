@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Card, Input, Button } from "semantic-ui-react";
+import { Card, Input, Button, Form } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const formDetails = {
   email: "",
@@ -11,9 +12,20 @@ function Signin() {
   const [signinForm, setSigninForm] = useState<object>(formDetails);
   const navigator = useNavigate();
 
-  const handleClick = () => {
-    console.log(signinForm);
-    navigator("/books");
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
+    await axios
+      .post("http://localhost:4000/auth/signin", signinForm)
+      .then((res) => {
+        console.log(res.data);
+        localStorage.setItem("token", res.data);
+        navigator("/books");
+      })
+      .catch((err) => {
+        alert("Account not exist please signup");
+        console.log(err);
+      });
   };
 
   return (
@@ -29,12 +41,8 @@ function Signin() {
     >
       <Card style={{ width: "400px" }}>
         <Card.Content style={{ margin: "auto" }}>
-          {/* <img
-            alt="instagram"
-            src="https://www.instagram.com/static/images/web/mobile_nav_type_logo-2x.png/1b47f9d0e595.png"
-          /> */}
-
-          <div
+          <Form
+            onSubmit={handleSubmit}
             style={{
               display: "flex",
               justifyContent: "center",
@@ -45,13 +53,14 @@ function Signin() {
               name="email"
               placeholder="email"
               style={{ margin: "10px", width: "280px" }}
-              type="text"
+              type="email"
               onChange={(e) =>
                 setSigninForm({
                   ...signinForm,
                   [e.target.name]: e.target.value,
                 })
               }
+              required
             />
             <Input
               name="password"
@@ -64,15 +73,16 @@ function Signin() {
                   [e.target.name]: e.target.value,
                 })
               }
+              required
             />
             <Button
               primary
+              type="submit"
               style={{ margin: "10px", width: "280px" }}
-              onClick={handleClick}
             >
               Log In
             </Button>
-          </div>
+          </Form>
         </Card.Content>
       </Card>
       <Card style={{ width: "400px" }}>

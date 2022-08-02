@@ -85,7 +85,7 @@ export default function Admin() {
           >
             Add Event
           </li>
-        </ul>
+a        </ul>
       </div>
     </div>
   );

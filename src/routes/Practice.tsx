@@ -1,13 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/Practice.css";
-import { Button } from "semantic-ui-react";
-import { useNavigate } from "react-router-dom";
+import { Button, TextArea } from "semantic-ui-react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { TiTick } from "react-icons/ti";
 import { MdIncompleteCircle } from "react-icons/md";
 import { BsFillBookmarkFill } from "react-icons/bs";
+import axios from "axios";
 
 function Practice() {
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const s: any = state;
+  const [chapterId, setChapterId] = useState<String>(s.name[0]);
+  const [chapters, setChapters] = useState<any>([]);
+  console.log(s.name);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:4000/request/getQuestions/${chapterId}`)
+      .then((res) => {
+        setChapters(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   return (
     <div className="practice">
       <div className="header">
@@ -32,6 +48,7 @@ function Practice() {
         </ul>
       </div>
       <div className="content">
+        {/* {chapters.map(chap=>) */}
         <div className="question-container">
           <div className="chapter">
             <div style={{ display: "flex", flexDirection: "column" }}>
@@ -96,16 +113,6 @@ function Practice() {
               <li>hello man</li>
             </ul>
           </div>
-          <div className="topics">
-            <h1>Topics</h1>
-            <ul>
-              <li>hello man</li>
-              <li>hello man</li>
-              <li>hello man</li>
-              <li>hello man</li>
-              <li>hello man</li>
-            </ul>
-          </div>
           <div className="questions">
             <h1>Questions</h1>
             <ul>
@@ -120,9 +127,13 @@ function Practice() {
               <li>2</li>
               <li>2</li>
               <li>2</li>
-              <li>1</li>  
+              <li>1</li>
             </ul>
           </div>
+          <TextArea
+            style={{ margin: "20px", width: "90%", minHeight: "100px" }}
+            placeholder="Ask Query"
+          />
         </div>
       </div>
     </div>

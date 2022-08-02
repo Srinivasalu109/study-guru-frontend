@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import "../styles/Options.css";
-
+interface funType {
+  handleSubject: (sub: String) => void;
+}
 const options = [true, false, false];
-function BookOptions() {
+function BookOptions({ handleSubject }: funType) {
   const [subject, setSubject] = useState<Array<boolean>>(options);
   const [trigger, setTrigger] = useState<number>(0);
 
@@ -21,10 +23,11 @@ function BookOptions() {
   return (
     <div>
       <ul className="subjects">
-        {["Maths", "Physics", "Chemistry"].map((sub, i) => (
+        {["Mathematics", "Physics", "Chemistry"].map((sub, i) => (
           <li
             className={`${subject[i] && "selectSub"}`}
             onClick={() => {
+              handleSubject(sub);
               handleClick(i);
             }}
           >

@@ -2,10 +2,8 @@ const bookDetails = {
   bookId: "",
   bookName: "",
   author: "",
-  branch: "",
-  subject: "",
   volume: "",
-  discription: "",
+  description: "",
 };
 
 const topicDetails = {
@@ -18,18 +16,15 @@ const topicDetails = {
 const chapterDetails = {
   bookId: "",
   chapterId: "",
+  subject: "",
   chapterName: "",
 };
 
 const questionDetails = {
   bookId: "",
   chapterId: "",
-  topicId: "",
   question: "",
-  optionId1: "",
-  optionId2: "",
-  optionId3: "",
-  optionId4: "",
+  questionId: "",
   option1: "",
   option2: "",
   option3: "",
@@ -41,8 +36,8 @@ const questionDetails = {
 const universityDetails = {
   universityId: "",
   universityName: "",
-  location: "",
-  branch: "",
+  state: "",
+  city: "",
   nirf: "",
 };
 
@@ -60,7 +55,8 @@ const universityToBookDetails = {
   bookId: "",
   universityId: "",
   universityName: "",
-  location: "",
+  state: "",
+  city: "",
   nirf: "",
 };
 

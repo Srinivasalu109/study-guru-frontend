@@ -1,17 +1,42 @@
-import React from "react";
-import { Button, Card, Icon, Image, Rating } from "semantic-ui-react";
+import React, { useState, useEffect } from "react";
+import { Button, Card, Icon, Image, Loader, Rating } from "semantic-ui-react";
 import Header from "../components/Header";
 import UniversityOptions from "../components/UniversityOptions";
 import background from "../images/background.jpg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import { MdLocationOn } from "react-icons/md";
 import "../styles/Items.css";
 
+interface UniversityType {
+  bookPreferred: String[];
+  branch: String;
+  city: String;
+  nirf: String;
+  state: String;
+  universityId: String;
+  universityImgURL: String;
+  universityName: String;
+  universityType: String;
+}
+
 function Univerisities() {
+  const [universities, setUniversities] = useState<UniversityType[]>([]);
+  const [category, setCategory] = useState<String>("Deemed");
   const navigate = useNavigate();
 
-  const Univerisity = () => (
+  const Univerisity = ({ uni }: any) => (
     <Card>
-      <Image src={background} wrapped ui={false} />
+      <Image
+        src={uni.universityImgURL}
+        wrapped
+        ui={false}
+        style={{
+          // height: "200px",
+          objectFit: "cover",
+          height: "100%",
+        }}
+      />
       <Card.Content
         style={{
           display: "flex",
@@ -22,12 +47,15 @@ function Univerisities() {
         <Card.Header
           style={{ textAlign: "center", color: "#042745", zIndex: "1" }}
         >
-          Matthew
+          {uni.universityName}
         </Card.Header>
         <Card.Description>
-          Matthew is a musician living in Nashville.
+          <p>
+            <MdLocationOn />
+            {uni.state} {uni.city}
+          </p>
         </Card.Description>
-        <p>A nice and tasty recepy for you</p>
+        <p> NIRF rank {uni.nirf}</p>
         {/* <div style={{ display: "flex", justifyContent: "center" }}>
           <Rating icon="star" defaultRating={3} maxRating={4} />
         </div> */}
@@ -35,19 +63,52 @@ function Univerisities() {
     </Card>
   );
 
+  const handleUnivesityType = (cat: String) => {
+    setCategory(cat);
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/signin");
+      return;
+    }
+    axios
+      .get(`http://localhost:4000/request/getUniversities/${category}`)
+      .then((res) => {
+        setUniversities(res.data);
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log("error", err);
+      });
+  }, [category]);
+
   return (
-    <div style={{ background: "#edeceb" }}>
-      {}
-      <UniversityOptions />
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <div className="Items">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((_) => (
-            <div className="Item">
-              <Univerisity />
+    <div>
+      {universities.length ? (
+        <div style={{ background: "#edeceb", minHeight: "100vh" }}>
+          <Header />
+          <UniversityOptions handleUnivesityType={handleUnivesityType} />
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <div className="Items">
+              {universities.map((uni, i) => (
+                <div
+                  className="Item"
+                  onClick={() => {
+                    navigate(`/booksByUniversity/${uni.universityId}`);
+                  }}
+                >
+                  <Univerisity uni={uni} />
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
-      </div>
+      ) : (
+        // <Loader />
+        <h1>Loading...</h1>
+      )}
     </div>
   );
 }

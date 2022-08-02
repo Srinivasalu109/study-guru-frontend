@@ -5,38 +5,28 @@ import Header from "../components/Header";
 import BookOptions from "../components/BookOptions";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { MdLocationOn } from "react-icons/md";
-
 import "../styles/Items.css";
+import BooksByUniversityOptions from "../components/BooksByUniversityOptions";
 
-function Books() {
-  interface BookType {
-    bookId: String;
-    author: String;
-    bookImgURL: String;
-    bookName: String;
-    branch: String;
-    chapters: String[];
-    description: String;
-    preparedFor: String[];
-    subject: String;
-    volume: String;
-  }
-  let { branch } = useParams();
+interface BooksPreffered {
+  author: String;
+  bookId: String;
+  bookImgURL: String;
+  bookName: String;
+  branch: String;
+  description: String;
+  subject: String;
+  volume: String;
+}
+function BooksByUniversity() {
+  const [booksPreferred, setBooksPreferred] = useState<BooksPreffered[]>([]);
   const navigate = useNavigate();
-  const [books, setBooks] = useState<BookType[]>([]);
+  const { universityId } = useParams();
   const [subject, setSubject] = useState<String>("Mathematics");
-  const handleSubject = (sub: String) => {
-    console.log(sub);
-    setSubject(sub);
-  };
-  const Book = ({ data }: any) => (
+
+  const Book = ({ bookInfo }: any) => (
     <Card>
-      <Image
-        src={data.bookImgURL}
-        wrapped
-        ui={false}
-      />
+      <Image src={bookInfo.bookImgURL} wrapped ui={false} />
       <Card.Content
         style={{
           display: "flex",
@@ -45,14 +35,9 @@ function Books() {
         }}
       >
         <Card.Header
-          style={{
-            textAlign: "center",
-            color: "#042745",
-            zIndex: "1.3",
-            marginTop: "10px",
-          }}
+          style={{ textAlign: "center", color: "#042745", zIndex: "1" }}
         >
-          {data.bookName}
+          {bookInfo.bookName}
         </Card.Header>
         <Card.Header
           style={{
@@ -60,26 +45,29 @@ function Books() {
             color: "#042745",
             zIndex: "1",
             fontSize: "1rem",
+            marginTop: "10px",
           }}
         >
-          <p>{data.author}</p>
+          {bookInfo.author}
         </Card.Header>
-        <Card.Description>{data.description}</Card.Description>
+        <Card.Description>{bookInfo.description}</Card.Description>
+        <p>nrfa rank is 21</p>
       </Card.Content>
     </Card>
   );
+  const handleSubject = (sub: String) => {
+    console.log(sub);
+    setSubject(sub);
+  };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/signin");
-      return;
-    }
     axios
-      .get(`http://localhost:4000/request/getBooks/${subject}`)
+      .get(
+        `http://localhost:4000/request/getBooksByUniversity/${universityId}/${subject}`
+      )
       .then((res) => {
-        setBooks(res.data);
-        console.log(res);
+        console.log(res.data.bookPreferred);
+        setBooksPreferred(res.data.bookPreferred);
       })
       .catch((err) => {
         console.log("error", err);
@@ -88,30 +76,30 @@ function Books() {
 
   return (
     <div>
-      {books.length ? (
+      {booksPreferred.length ? (
         <div style={{ background: "#edeceb" }}>
           <Header />
-          <BookOptions handleSubject={handleSubject} />
+          <BooksByUniversityOptions handleSubject={handleSubject} />
           <div style={{ display: "flex", justifyContent: "center" }}>
             <div className="Items">
-              {books?.map((data) => (
+              {booksPreferred.map((bookInfo) => (
                 <div
                   className="Item"
                   onClick={() => {
-                    navigate(`/bookDetails/${data.bookId}`);
+                    navigate(`/bookDetails/${bookInfo.bookId}`);
                   }}
                 >
-                  <Book data={data} />
+                  <Book bookInfo={bookInfo} />
                 </div>
               ))}
             </div>
           </div>
         </div>
       ) : (
-        <h1>Loading...</h1>
+        <Loader />
       )}
     </div>
   );
 }
 
-export default Books;
+export default BooksByUniversity;

@@ -6,18 +6,37 @@ import { Dropdown } from "semantic-ui-react";
 import { TextArea, Form } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 import { eventDetails } from "../utils/formDetails";
+import axios from "axios";
+
+interface Event {
+  eventId: String;
+  eventName: String;
+  time: String;
+  universityName: String;
+  location: String;
+  branch: String;
+}
+const branches = [
+  { key: "af", value: "MPC", text: "MPC" },
+  { key: "ax", value: "BiPC", text: "BiPC" },
+];
 
 function AddEvent() {
   const [img, setImg] = useState<any>("");
   const [imgUrl, setImgUrl] = useState<String>("");
-  const [newEvent, setNewEvent] = useState<object>(eventDetails);
+  const [newEvent, setNewEvent] = useState<Event>(eventDetails);
   const [branch, setBranch] = useState<any>("");
 
   const handleChange = (e: any) => {
     setNewEvent({ ...newEvent, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: any) => {
+  const handleBranch = (e: any, data: any) => {
+    setBranch(data.value);
+  };
+
+  const handleSubmit = async (e: any) => {
+    console.log("sdc,msdc")
     e.preventDefault();
     if (!branch) {
       alert("please select branch");
@@ -26,8 +45,30 @@ function AddEvent() {
     if (!imgUrl) {
       alert("please upload image");
     }
-  };
 
+    const event = {
+      eventId: newEvent.eventId,
+      eventName: newEvent.eventName,
+      universityName: newEvent.universityName,
+      location: newEvent.location,
+      time: newEvent.time,
+      eventImgUrl: imgUrl,
+      branch: branch,
+    };
+
+    console.log(event);
+
+    await axios
+      .post("http://localhost:4000/add/addEvent", event)
+      .then((res) => {
+        console.log(res);
+        alert("sucessfully added");
+      })
+      .catch((err) => {
+        alert("This book is already added");
+        console.log(err);
+      });
+  };
   useEffect(() => {
     if (img !== "") {
       const image = img !== null ? img : "";
@@ -71,32 +112,54 @@ function AddEvent() {
                 onSubmit={handleSubmit}
               >
                 <Input
-                  name="bookId"
-                  placeholder="book id"
+                  name="eventId"
+                  placeholder="event id"
                   style={{ margin: "10px", width: "450px" }}
                   type="text"
-                  onchange={handleChange}
+                  onChange={handleChange}
                   required
                 />
                 <Input
-                  name="chapterId"
-                  placeholder="chapter id"
+                  name="eventName"
+                  placeholder="event name"
                   style={{ margin: "10px", width: "450px" }}
                   type="text"
+                  onChange={handleChange}
                   required
                 />{" "}
                 <Input
-                  name="topicId"
-                  placeholder="topic id"
+                  name="time"
+                  placeholder="time"
                   style={{ margin: "10px", width: "450px" }}
                   type="text"
+                  onChange={handleChange}
                   required
                 />{" "}
                 <Input
-                  name="topicName"
-                  placeholder="topic name"
+                  name="universityName"
+                  placeholder="university name"
                   style={{ margin: "10px", width: "450px" }}
                   type="text"
+                  onChange={handleChange}
+                  required
+                />
+                <Dropdown
+                  placeholder="Branch"
+                  search
+                  selection
+                  options={branches}
+                  value={branch}
+                  onChange={handleBranch}
+                  style={{ margin: "10px", width: "450px" }}
+                  required
+                />
+                <Input
+                  name="location"
+                  placeholder="location"
+                  style={{ margin: "10px", width: "450px" }}
+                  type="text"
+                  onChange={handleChange}
+                  required
                 />
                 <label className="custom-file-upload">
                   <input

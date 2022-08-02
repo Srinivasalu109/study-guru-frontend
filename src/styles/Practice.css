@@ -86,15 +86,6 @@ h3 {
   margin: 20px;
 }
 
-.topics {
-  border-radius: 3px;
-  width: 90%;
-  height: 200px;
-  border: solid 2px;
-  overflow-y: auto;
-  margin: 20px;
-}
-
 .questions {
   border-radius: 3px;
   width: 90%;
@@ -103,7 +94,6 @@ h3 {
   border: solid 2px;
   margin: 20px;
 }
-
 .questions ul li {
   border-radius: 50%;
   width: 36px;

@@ -6,19 +6,42 @@ import { Dropdown } from "semantic-ui-react";
 import { TextArea, Form } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 import { questionDetails } from "../utils/formDetails";
+import axios from "axios";
+import { isConstructorDeclaration } from "typescript";
 
+interface Question {
+  bookId: String;
+  chapterId: String;
+  question: String;
+  questionId: String;
+  option1: String;
+  option2: String;
+  option3: String;
+  option4: String;
+  anwser: String;
+  solution: String;
+}
 
 function AddQuestion() {
-  const [newQuestion, setNewQuestion] = useState<object>(questionDetails);
+  const [newQuestion, setNewQuestion] = useState<Question>(questionDetails);
 
   const handleChange = (e: any) => {
     console.log(newQuestion);
     setNewQuestion({ ...newQuestion, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
+    console.log("hello");
     console.log(newQuestion);
     e.preventDefault();
+    await axios
+      .post("http://localhost:4000/add/addQuestion", newQuestion)
+      .then((res) => {
+        alert("sucessfully inserted");
+      })
+      .catch((err) => {
+        alert("please check bookid , chapterid , topicid and questionid");
+      });
   };
   return (
     <div>
@@ -58,48 +81,16 @@ function AddQuestion() {
                   required
                 />{" "}
                 <Input
-                  name="topicId"
-                  placeholder="topic id"
+                  name="questionId"
+                  placeholder="question id"
                   style={{ margin: "10px", width: "450px" }}
-                  type="text"
                   onChange={handleChange}
+                  type="text"
                   required
-                />{" "}
-                <Input
+                />
+                <TextArea
                   name="question"
                   placeholder="question"
-                  style={{ margin: "10px", width: "450px" }}
-                  onChange={handleChange}
-                  type="text"
-                  required
-                />
-                <Input
-                  name="optionId1"
-                  placeholder="option id 1"
-                  style={{ margin: "10px", width: "450px" }}
-                  onchange={handleChange}
-                  type="text"
-                  required
-                />
-                <Input
-                  name="optionId2"
-                  placeholder="option id 2"
-                  style={{ margin: "10px", width: "450px" }}
-                  onChange={handleChange}
-                  type="text"
-                  required
-                />
-                <Input
-                  name="optionId3"
-                  placeholder="option id 3"
-                  style={{ margin: "10px", width: "450px" }}
-                  onchange={handleChange}
-                  type="text"
-                  required
-                />
-                <Input
-                  name="optionId4"
-                  placeholder="option id 4"
                   style={{ margin: "10px", width: "450px" }}
                   onChange={handleChange}
                   type="text"
@@ -137,11 +128,18 @@ function AddQuestion() {
                   type="text"
                   required
                 />
+                <Input
+                  name="anwser"
+                  placeholder="anwser"
+                  style={{ margin: "10px", width: "450px" }}
+                  onChange={handleChange}
+                  required
+                />
                 <TextArea
                   name="solution"
                   placeholder="Solution"
                   style={{ margin: "10px", width: "450px", minHeight: "100px" }}
-                  onchange={handleChange}
+                  onChange={handleChange}
                   required
                 />
                 <Button
