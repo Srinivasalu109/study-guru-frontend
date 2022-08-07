@@ -19,10 +19,17 @@ interface UniversityType {
   universityName: String;
   universityType: String;
 }
+interface UniversityNames {
+  key: number;
+  value: any;
+  text: any;
+}
 
 function Univerisities() {
   const [universities, setUniversities] = useState<UniversityType[]>([]);
   const [category, setCategory] = useState<String>("Deemed");
+  const [universityNames, setUniversityNames] = useState<UniversityNames[]>([]);
+
   const navigate = useNavigate();
 
   const Univerisity = ({ uni }: any) => (
@@ -69,13 +76,23 @@ function Univerisities() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    console.log(token);
     if (!token) {
-      navigate("/signin");
+      navigate("/");
       return;
     }
     axios
       .get(`http://localhost:4000/request/getUniversities/${category}`)
       .then((res) => {
+        const filterUniversityNames = [];
+        for (let i = 0; i < res.data.length; i++) {
+          filterUniversityNames.push({
+            key: res.data[i].universityId,
+            value: res.data[i].universityId,
+            text: res.data[i].universityName,
+          });
+        }
+        setUniversityNames(filterUniversityNames);
         setUniversities(res.data);
         console.log(res);
       })
@@ -88,7 +105,7 @@ function Univerisities() {
     <div>
       {universities.length ? (
         <div style={{ background: "#edeceb", minHeight: "100vh" }}>
-          <Header />
+          <Header ser={"university"} data={universityNames} />
           <UniversityOptions handleUnivesityType={handleUnivesityType} />
           <div style={{ display: "flex", justifyContent: "center" }}>
             <div className="Items">

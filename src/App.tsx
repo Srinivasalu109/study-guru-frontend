@@ -52,8 +52,8 @@ function App() {
       <Route path="/addQuestionToTopic" element={<AddQuestionToTopic />} />
       <Route path="/addUniversity" element={<AddUniversity />} />
       <Route path="/addEvent" element={<AddEvent />} />
-      <Route path="/practice" element={<Practice />} />
-      <Route path="/solution" element={<Solution />} />
+      <Route path="/practice/:chapId/:num" element={<Practice />} />
+      <Route path="/solution/:questionId" element={<Solution />} />
     </Routes>
   );
 }

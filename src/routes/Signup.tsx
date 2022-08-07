@@ -12,13 +12,21 @@ const formDetails = {
   branch: "",
 };
 
+interface SignUpForm {
+  firstName: String;
+  lastName: String;
+  email: string;
+  password: String;
+  branch: String;
+}
+
 const countryOptions = [
   { key: "af", value: "MPC", text: "MPC" },
   { key: "ax", value: "BPC", text: "BPC" },
 ];
 
 function Signup() {
-  const [signupForm, setSignupForm] = useState<object>(formDetails);
+  const [signupForm, setSignupForm] = useState<SignUpForm>(formDetails);
   // const [branch, setBranch] = useState<any>("");
   const navigator = useNavigate();
 
@@ -42,6 +50,7 @@ function Signup() {
       .then((res) => {
         console.log(res.data);
         localStorage.setItem("token", res.data);
+        localStorage.setItem("email", signupForm.email);
         navigator("/books");
       })
       .catch((err) => {

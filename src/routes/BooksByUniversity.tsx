@@ -18,11 +18,17 @@ interface BooksPreffered {
   subject: String;
   volume: String;
 }
+interface BookNames {
+  key: number;
+  value: any;
+  text: any;
+}
 function BooksByUniversity() {
   const [booksPreferred, setBooksPreferred] = useState<BooksPreffered[]>([]);
   const navigate = useNavigate();
   const { universityId } = useParams();
   const [subject, setSubject] = useState<String>("Mathematics");
+  const [booksNames, setBookNames] = useState<BookNames[]>([]);
 
   const Book = ({ bookInfo }: any) => (
     <Card>
@@ -67,6 +73,15 @@ function BooksByUniversity() {
       )
       .then((res) => {
         console.log(res.data.bookPreferred);
+        const filterBookNames = [];
+        for (let i = 0; i < res.data.bookPreferred.length; i++) {
+          filterBookNames.push({
+            key: res.data.bookPreferred[i].bookId,
+            value: res.data.bookPreferred[i].bookId,
+            text: res.data.bookPreferred[i].bookName,
+          });
+        }
+        setBookNames(filterBookNames);
         setBooksPreferred(res.data.bookPreferred);
       })
       .catch((err) => {
@@ -78,7 +93,7 @@ function BooksByUniversity() {
     <div>
       {booksPreferred.length ? (
         <div style={{ background: "#edeceb" }}>
-          <Header />
+          <Header ser={"book"} data={booksNames} />
           <BooksByUniversityOptions handleSubject={handleSubject} />
           <div style={{ display: "flex", justifyContent: "center" }}>
             <div className="Items">
@@ -96,7 +111,7 @@ function BooksByUniversity() {
           </div>
         </div>
       ) : (
-        <Loader />
+        <h1>Loading...</h1>
       )}
     </div>
   );

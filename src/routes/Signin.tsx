@@ -19,7 +19,9 @@ function Signin() {
       .post("http://localhost:4000/auth/signin", signinForm)
       .then((res) => {
         console.log(res.data);
-        localStorage.setItem("token", res.data);
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("email", res.data.oldUser.email);
+
         navigator("/books");
       })
       .catch((err) => {

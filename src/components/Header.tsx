@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaBookReader } from "react-icons/fa";
 import { FiSearch } from "react-icons/fi";
 import { BsFillPersonFill } from "react-icons/bs";
@@ -7,20 +7,29 @@ import Profile from "../components/Profile";
 import { Modal, Dropdown } from "semantic-ui-react";
 import headerStyles from "../styles/Header.module.css";
 import { createContext } from "react";
-// import { GiHamburgerMenu } from "react-icons/gi";
 
 export const HeaderContext = createContext<object>({});
+interface BookNames {
+  key: number;
+  value: any;
+  text: any;
+}
+interface Props {
+  ser: String;
+  data: BookNames[];
+}
 
-function Header() {
-  const menuState = [true, false, false, false];
-  const menuOptions = ["Books", "Universities", "Progress", "Events"];
-  const menuPaths = ["books", "universities", "progress", "events"];
+function Header({ ser, data }: Props) {
+  const menuState = [true, false];
+  const menuOptions = ["Books", "Universities"];
+  const menuPaths = ["books", "universities"];
   const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
   const [menu, setMenu] = useState<boolean[]>(menuState);
   const [search, setSearch] = useState<string>("");
   const [profile, setProfile] = useState<boolean>(false);
   const [triger, setTriger] = useState<number>(0);
+  const [id, setId] = useState<number>(0);
 
   const handleClick = (i: number) => {
     navigate(`/${menuPaths[i]}`);
@@ -30,12 +39,18 @@ function Header() {
     setSearch(e.target.value);
   };
   const handleSelect = (e: any, data: any) => {
-    setOpen(!open);
+    if (ser === "book") {
+      navigate(`/bookDetails/${data.value}`);
+    } else if (ser === "university") {
+      navigate(`/booksByUniversity/${data.value}`);
+    }
   };
-  const countryOptions = [
-    { key: "af", value: "MPC", text: "MPC" },
-    { key: "ax", value: "BPC", text: "BPC" },
-  ];
+
+  const toggleProfile = () => {
+    setProfile(!profile);
+  };
+
+
   return (
     <div className={headerStyles.header}>
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -79,10 +94,10 @@ function Header() {
         >
           <Modal.Content style={{ display: "flex", justifyContent: "center" }}>
             <Dropdown
-              placeholder="Search book"
+              placeholder={`Search ${ser} `}
               search
               selection
-              options={countryOptions}
+              options={data}
               value={search}
               onChange={handleSelect}
               style={{ margin: "10px", width: "480px" }}
@@ -111,7 +126,7 @@ function Header() {
           }
         >
           <Modal.Content style={{ display: "flex", justifyContent: "center" }}>
-            <Profile />
+            <Profile toggleProfile={toggleProfile}/>
           </Modal.Content>
         </Modal>
       </ul>

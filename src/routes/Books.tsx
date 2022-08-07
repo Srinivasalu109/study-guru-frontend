@@ -22,21 +22,24 @@ function Books() {
     subject: String;
     volume: String;
   }
+  interface BookNames {
+    key: number;
+    value: any;
+    text: any;
+  }
   let { branch } = useParams();
   const navigate = useNavigate();
   const [books, setBooks] = useState<BookType[]>([]);
   const [subject, setSubject] = useState<String>("Mathematics");
+  const [booksNames, setBookNames] = useState<BookNames[]>([]);
+
   const handleSubject = (sub: String) => {
     console.log(sub);
     setSubject(sub);
   };
   const Book = ({ data }: any) => (
     <Card>
-      <Image
-        src={data.bookImgURL}
-        wrapped
-        ui={false}
-      />
+      <Image src={data.bookImgURL} wrapped ui={false} />
       <Card.Content
         style={{
           display: "flex",
@@ -71,14 +74,24 @@ function Books() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    console.log(token);
     if (!token) {
-      navigate("/signin");
+      navigate("/");
       return;
     }
     axios
       .get(`http://localhost:4000/request/getBooks/${subject}`)
       .then((res) => {
+        const filterBookNames = [];
+        for (let i = 0; i < res.data.length; i++) {
+          filterBookNames.push({
+            key: res.data[i].bookId,
+            value: res.data[i].bookId,
+            text: res.data[i].bookName,
+          });
+        }
         setBooks(res.data);
+        setBookNames(filterBookNames);
         console.log(res);
       })
       .catch((err) => {
@@ -90,7 +103,7 @@ function Books() {
     <div>
       {books.length ? (
         <div style={{ background: "#edeceb" }}>
-          <Header />
+          <Header ser={"book"} data={booksNames} />
           <BookOptions handleSubject={handleSubject} />
           <div style={{ display: "flex", justifyContent: "center" }}>
             <div className="Items">

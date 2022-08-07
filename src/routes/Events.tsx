@@ -45,7 +45,7 @@ function Events() {
 
   return (
     <div style={{ background: "#edeceb" }}>
-      <Header />
+      {/* <Header /> */}
       <EventOptions />
       <div style={{ display: "flex", justifyContent: "center" }}>
         <div className="Items">

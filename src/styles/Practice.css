@@ -4,11 +4,13 @@
 }
 .practice {
   background-color: #edeceb;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .header {
   width: 100%;
+  position: sticky;
+  top: 0px;
 }
 
 .header ul {
@@ -83,7 +85,15 @@ h3 {
   height: 200px;
   overflow-y: auto;
   border: solid 2px;
-  margin: 20px;
+  margin: 10px;
+}
+
+.anwser {
+  margin-left: 20px;
+  background-color: orange;
+  padding: 20px;
+  margin-right:20px ;
+  font-weight: bold;
 }
 
 .questions {
@@ -92,7 +102,7 @@ h3 {
   height: 200px;
   overflow-y: auto;
   border: solid 2px;
-  margin: 20px;
+  margin: 10px;
 }
 .questions ul li {
   border-radius: 50%;
@@ -134,4 +144,19 @@ h3 {
 
 .questions ul li:hover {
   background-color: gray;
+}
+
+.selected {
+  background-color: gray !important;
+}
+
+.solve {
+  display: flex;
+  align-items: center;
+  color: orange;
+}
+
+.solved {
+  display: flex;
+  align-items: center;
 }

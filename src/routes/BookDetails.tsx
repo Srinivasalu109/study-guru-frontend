@@ -6,7 +6,6 @@ import { Accordion, Form, Menu, Button, Loader } from "semantic-ui-react";
 import { MdLocationOn } from "react-icons/md";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import { title } from "process";
 
 interface PreferedType {
   branch: String;
@@ -31,16 +30,18 @@ export default function BookDetails() {
   const [bookDetails, setBookDetails] = useState<any>([]);
   const [preferedFor, setPreferedFor] = useState<PreferedType[]>([]);
   const [chapter, setChapter] = useState<Chapter[]>([]);
-  const [paths, setPaths] = useState<String[]>([]);
-  const [path, setPath] = useState<String>("");
+  const [paths, setPaths] = useState<Chapter[]>([]);
+  const [path, setPath] = useState<any>("");
   const [prev, setPrev] = useState<number>(-1);
 
   console.log(bookId);
   const navigate = useNavigate();
 
   const start = () => {
+    console.log(paths[0]);
+    console.log(`/practice/${paths[0]}/${0}`);
     if (paths.length) {
-      navigate(`/practice/`, {
+      navigate(`/practice/${paths[0].chapterId}/${0}`, {
         state: {
           name: paths,
         },
@@ -50,12 +51,12 @@ export default function BookDetails() {
     }
   };
 
-  const handleChapter = (i: number, chapterId: any) => {
+  const handleChapter = (i: number, chapterId: any, chapterName: any) => {
     localStorage.setItem(`${i}`, chapterId);
     if (paths.length === 0) {
       setPath(chapterId);
     }
-    setPaths([...paths, chapterId]);
+    setPaths([...paths, { chapterId, chapterName }]);
   };
 
   const chapters = (
@@ -67,7 +68,7 @@ export default function BookDetails() {
             name="Chapter 1"
             value={`${chap.chapterName}`}
             style={{ margin: "5px" }}
-            onClick={() => handleChapter(i, chap.chapterId)}
+            onClick={() => handleChapter(i, chap.chapterId, chap.chapterName)}
           />
         ))}
       </Form.Group>
@@ -103,7 +104,7 @@ export default function BookDetails() {
     <div>
       {preferedFor.length ? (
         <div className="bookDetails">
-          <Header />
+          {/* <Header /> */}
           <CustomCard bookDetails={bookDetails} />
           <div className="preparationFor">
             <h1>Preaparation for</h1>
@@ -164,7 +165,7 @@ export default function BookDetails() {
           </div>
         </div>
       ) : (
-        <Loader />
+        <h1>Loading...</h1>
       )}
     </div>
   );
